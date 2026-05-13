@@ -1,5 +1,4 @@
 # anime_streaming/anime_streaming.py
-# Archivo principal: define las páginas y configura la app
 
 import reflex as rx
 from anime_streaming.components import (
@@ -10,20 +9,13 @@ from anime_streaming.components import (
 )
 from anime_streaming.data import TRENDING_ANIME, CONTINUE_WATCHING, RECOMMENDED
 
-# Color de fondo principal (negro oscuro como Netflix/Crunchyroll)
 BG = "#0d0d0d"
 
 
-# ══════════════════════════════════════════════
-#  PÁGINA 1: HOME (ruta "/")
-# ══════════════════════════════════════════════
 def index() -> rx.Component:
     return rx.box(
-        # Barra de navegación fija
         navbar(),
-        # Sección hero (imagen grande con Frieren)
         hero_section(),
-        # Contenido debajo del hero
         rx.vstack(
             content_section("Trending Now", TRENDING_ANIME),
             genre_pills(),
@@ -41,24 +33,15 @@ def index() -> rx.Component:
     )
 
 
-# ══════════════════════════════════════════════
-#  PÁGINA 2: DETALLE DE FRIEREN (ruta "/frieren")
-#  → A esta página lleva el botón ▶ Play
-# ══════════════════════════════════════════════
 def frieren_detail() -> rx.Component:
     return rx.box(
-        # ── Barra superior con botón de regreso ──
+        # Navbar con botón volver
         rx.box(
             rx.hstack(
                 rx.link(
                     rx.hstack(
-                        rx.text("←", color="white", font_size="22px", line_height="1"),
-                        rx.text(
-                            "Volver",
-                            color="white",
-                            font_size="15px",
-                            font_weight="500",
-                        ),
+                        rx.text("←", color="white", font_size="22px"),
+                        rx.text("Volver", color="white", font_size="15px", font_weight="500"),
                         gap="8px",
                         align="center",
                     ),
@@ -84,23 +67,24 @@ def frieren_detail() -> rx.Component:
             background="rgba(13,13,13,0.96)",
             backdrop_filter="blur(10px)",
         ),
-        # ── Hero de la página de detalle ──
+        # Banner con imagen real
         rx.box(
-            rx.box(
+            rx.image(
+                src="/banner.jpg",
+                width="100%",
+                height="100%",
+                object_fit="cover",
                 position="absolute",
                 top="0",
                 left="0",
-                bottom="0",
-                width="62%",
+            ),
+            rx.box(
+                position="absolute", top="0", left="0", bottom="0", width="62%",
                 background="linear-gradient(to right, #0d0d0d 40%, transparent 100%)",
                 z_index="1",
             ),
             rx.box(
-                position="absolute",
-                left="0",
-                right="0",
-                bottom="0",
-                height="60%",
+                position="absolute", left="0", right="0", bottom="0", height="60%",
                 background="linear-gradient(to top, #0d0d0d 0%, transparent 100%)",
                 z_index="1",
             ),
@@ -116,12 +100,7 @@ def frieren_detail() -> rx.Component:
                     ),
                     rx.hstack(
                         rx.box(
-                            rx.text(
-                                "⭐ 9.4",
-                                color="white",
-                                font_size="13px",
-                                font_weight="700",
-                            ),
+                            rx.text("⭐ 9.4", color="white", font_size="13px", font_weight="700"),
                             background="rgba(255,200,0,0.18)",
                             border="1px solid rgba(255,200,0,0.4)",
                             border_radius="6px",
@@ -145,12 +124,7 @@ def frieren_detail() -> rx.Component:
                     ),
                     rx.hstack(
                         rx.box(
-                            rx.text(
-                                "▶  Reproducir",
-                                color="#111111",
-                                font_weight="700",
-                                font_size="15px",
-                            ),
+                            rx.text("▶  Reproducir", color="#111111", font_weight="700", font_size="15px"),
                             background="white",
                             border_radius="22px",
                             padding_x="28px",
@@ -158,12 +132,7 @@ def frieren_detail() -> rx.Component:
                             cursor="pointer",
                         ),
                         rx.box(
-                            rx.text(
-                                "+ Mi Lista",
-                                color="white",
-                                font_weight="500",
-                                font_size="15px",
-                            ),
+                            rx.text("+ Mi Lista", color="white", font_weight="500", font_size="15px"),
                             background="rgba(255,255,255,0.13)",
                             border="1px solid rgba(255,255,255,0.28)",
                             border_radius="22px",
@@ -185,38 +154,41 @@ def frieren_detail() -> rx.Component:
             position="relative",
             width="100%",
             height="480px",
-            background="linear-gradient(135deg, #1a0818 0%, #3a1030 25%, #4a1d3a 45%, #6a3555 65%, #7a4060 80%)",
             overflow="hidden",
+            background="#0d0d0d",
         ),
-        # ── Lista de episodios ──
+        # Lista de episodios
         rx.vstack(
-            rx.text(
-                "Episodios",
-                color="white",
-                font_size="20px",
-                font_weight="700",
-            ),
+            rx.text("Episodios", color="white", font_size="20px", font_weight="700"),
             *[
                 rx.box(
                     rx.hstack(
-                        # Miniatura del episodio
                         rx.box(
-                            rx.text(
-                                f"EP {i}",
-                                color="white",
-                                font_size="11px",
-                                font_weight="700",
+                            rx.image(
+                                src="/banner.jpg",
+                                width="100%",
+                                height="100%",
+                                object_fit="cover",
+                                border_radius="8px",
                             ),
-                            background=f"linear-gradient(135deg, #2a0a1a 0%, #4a1535 100%)",
+                            rx.box(
+                                rx.text(f"EP {i}", color="white", font_size="11px", font_weight="700"),
+                                position="absolute",
+                                bottom="6px",
+                                left="8px",
+                                background="rgba(0,0,0,0.65)",
+                                border_radius="4px",
+                                padding_x="6px",
+                                padding_y="2px",
+                                z_index="1",
+                            ),
+                            position="relative",
                             width="105px",
                             height="66px",
                             border_radius="8px",
-                            display="flex",
-                            align_items="center",
-                            justify_content="center",
+                            overflow="hidden",
                             flex_shrink="0",
                         ),
-                        # Info del episodio
                         rx.vstack(
                             rx.text(
                                 [
@@ -231,11 +203,7 @@ def frieren_detail() -> rx.Component:
                                 font_size="14px",
                                 font_weight="600",
                             ),
-                            rx.text(
-                                "24 min  •  Sub español",
-                                color="#777777",
-                                font_size="12px",
-                            ),
+                            rx.text("24 min  •  Sub español", color="#777777", font_size="12px"),
                             align_items="flex-start",
                             gap="4px",
                         ),
@@ -263,9 +231,6 @@ def frieren_detail() -> rx.Component:
     )
 
 
-# ══════════════════════════════════════════════
-#  CONFIGURACIÓN DE LA APP
-# ══════════════════════════════════════════════
 app = rx.App(
     style={
         "font_family": "Inter, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif",
@@ -277,6 +242,5 @@ app = rx.App(
     }
 )
 
-# Registrar las páginas
 app.add_page(index, route="/")
 app.add_page(frieren_detail, route="/frieren")
